@@ -1,39 +1,55 @@
-#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+long solve(char*, int);
+
+long solve(char* str, int k) {
+  int n = strlen(str);
+  int to_drop = n - k;
+  char* stack = malloc(n + 1);
+  int top = 0;
+
+  for (int i = 0; i < n; i++) {
+    char c = str[i];
+
+    while (top > 0 && stack[top - 1] < c && to_drop > 0) {
+      top--;
+      to_drop--;
+    }
+
+    stack[top++] = c;
+  }
+
+  stack[k] = '\0';
+  return atol(stack);
+}
+
 int main() {
-  int total = 0;
-  FILE *stream;
+  long part_1 = 0;
+  long part_2 = 0;
+
+  FILE *fp;
   char *line = NULL;
   size_t size = 0;
   ssize_t nread;
 
-  stream = fopen("day3.txt", "r");
-  if (stream == NULL) {
+  fp = fopen("day3.txt", "r");
+  if (fp == NULL) {
     perror("fopen");
-    exit(EXIT_FAILURE);
   }
 
-  while ((nread = getline(&line, &size, stream)) != -1) {
-    int a = -1;
-    int b = -1;
-    int c = 0;
-    for (int i = 0; i < nread; ++i) {
-      int x = line[i] - '0';
-      if (x > a) {
-        a = x;
-        b = -1;
-      } else if (x > b) {
-        b = x;
-      }
+  while ((nread = getline(&line, &size, fp)) != -1) {
+    if (line[nread - 1] == '\n') {
+      line[nread - 1] = '\0';
+      nread--;
     }
-    total = total + ((a * 10) + b);
-  }
-  printf("total = %d\n", total);
 
-  free(line);
-  fclose(stream);
-  exit(EXIT_SUCCESS);
+    part_1 += solve(line, 2);
+    part_2 += solve(line, 12);
+  }
+
+  printf("part 1 = %ld part 2 = %ld", part_1, part_2);
+
+  return 0;
 }
