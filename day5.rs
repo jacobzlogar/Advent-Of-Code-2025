@@ -47,7 +47,7 @@ fn main() -> Result<()> {
 
     let part_2: usize = ranges.iter().enumerate().fold(0, |mut acc, (k, v)| {
 	let prev_end = if k > 0 { ranges[k - 1].1 } else { 0 };
-	let front = v.0.max(prev_end + 1);
+	let front = v.0.max(prev_end);
 
 	if front <= v.1 {
 	    acc += v.1 - front + 1;
