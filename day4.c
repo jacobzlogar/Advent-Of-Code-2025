@@ -44,18 +44,18 @@ int main() {
       int count = 0;
 
       for (int k = 0; k < 8; k++) {
-	int nx = i + DIRS[k][0]; 
-	int ny = j + DIRS[k][1];
-	if (nx >= 0 && nx < height &&
-	    ny >= 0 && ny < width)  {
-	  if (rows[nx][ny] == '@')
-	    count++;
-	}
+        int nx = i + DIRS[k][0]; 
+        int ny = j + DIRS[k][1];
+        if (nx >= 0 && nx < height &&
+            ny >= 0 && ny < width)  {
+          if (rows[nx][ny] == '@')
+            count++;
+        }
       }
 
       if (count < 4) {
-	rows_copy[i][j] = 'x';
-	part_1++;
+        rows_copy[i][j] = 'x';
+        part_1++;
       }
     }
   }
@@ -69,24 +69,24 @@ int main() {
     
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-	if (rows_copy[i][j] != '@') continue;
+        if (rows_copy[i][j] != '@') continue;
 
-	int count = 0;
+        int count = 0;
 
-	for (int k = 0; k < 8; k++) {
-	  int nx = i + DIRS[k][0];
-	  int ny = j + DIRS[k][1];
-	  if (nx >= 0 && nx < height &&
-	      ny >= 0 && ny < width)  {
-	    if (rows_copy[nx][ny] == '@')
-	      count++;
-	  }
-	}
+        for (int k = 0; k < 8; k++) {
+          int nx = i + DIRS[k][0];
+          int ny = j + DIRS[k][1];
+          if (nx >= 0 && nx < height &&
+              ny >= 0 && ny < width)  {
+            if (rows_copy[nx][ny] == '@')
+              count++;
+          }
+        }
 
-	if (count < 4) {
-	  rows_copy[i][j] = 'x';
-	  to_remove++;
-	}
+        if (count < 4) {
+          rows_copy[i][j] = 'x';
+          to_remove++;
+        }
       }
     }
     if (to_remove == 0)
