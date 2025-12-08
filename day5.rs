@@ -6,7 +6,6 @@ use std::collections::HashSet;
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error>>;
 
-
 fn main() -> Result<()> {
     let mut part_1 = 0;
     let mut part_2 = 0;
@@ -29,7 +28,7 @@ fn main() -> Result<()> {
         }
     }
 
-    let part_1: usize = ingredients.iter().fold(0, |mut acc, i| {
+    part_1 = ingredients.iter().fold(0, |mut acc, i| {
         let options = ranges
             .iter()
             .filter(|(x, y)| x <= i);
@@ -40,22 +39,24 @@ fn main() -> Result<()> {
         acc
     });
 
-
-    println!("part_1 = {part_1}");
-
     ranges.sort_by_key(|r| r.0);
 
-    let part_2: usize = ranges.iter().enumerate().fold(0, |mut acc, (k, v)| {
-        let prev_end = if k > 0 { ranges[k - 1].1 } else { 0 };
-        let front = v.0.max(prev_end);
+    let mut start = ranges[0].0;
+    let mut end = ranges[0].1;
 
-        if front <= v.1 {
-            acc += v.1 - front + 1;
+    for &(a, b) in &ranges[1..] {
+        if a <= end + 1 { // are we still in an interval?
+            end = end.max(b);
+        } else {
+            part_2 += end - start + 1; // found the end, incremenet part2
+            start = a;
+            end = b;
         }
-        acc
-    });
+    }
 
-    println!("part_2 = {part_2}");
+    part_2 += end - start + 1;
+
+    println!("part 1 = {part_1}, part 2 = {part_2}");
 
     Ok(())
 }
